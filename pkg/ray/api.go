@@ -8,4 +8,5 @@ type Ray interface {
 	Origin() *vec3.Vec3Impl
 	Direction() *vec3.Vec3Impl
 	PointAtParameter(t float64) *vec3.Vec3Impl
+	Time() float64
 }

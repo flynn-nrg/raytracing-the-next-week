@@ -49,14 +49,14 @@ func (d *Dielectric) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 	if refracted, ok = refract(r.Direction(), outwardNormal, niOverNt); ok {
 		reflectProb = schlick(cosine, d.refIdx)
 	} else {
-		scattered = ray.New(hr.P(), reflected)
+		scattered = ray.New(hr.P(), reflected, r.Time())
 		reflectProb = 1.0
 	}
 
 	if rand.Float64() < reflectProb {
-		scattered = ray.New(hr.P(), reflected)
+		scattered = ray.New(hr.P(), reflected, r.Time())
 	} else {
-		scattered = ray.New(hr.P(), refracted)
+		scattered = ray.New(hr.P(), refracted, r.Time())
 	}
 
 	return scattered, attenuation, true
