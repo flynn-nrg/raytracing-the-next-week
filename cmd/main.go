@@ -8,49 +8,10 @@ import (
 
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/camera"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/hitable"
-	"github.com/flynn-nrg/raytracing-the-next-week/pkg/material"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/ray"
+	"github.com/flynn-nrg/raytracing-the-next-week/pkg/scenes"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/vec3"
 )
-
-func randomScene() *hitable.HitableSlice {
-	spheres := []hitable.Hitable{hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, &vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, 0, 1, 1000, material.NewLambertian(&vec3.Vec3Impl{X: 0.5, Y: 0.5, Z: 0.5}))}
-	for a := -11; a < 11; a++ {
-		for b := -11; b < 11; b++ {
-			chooseMat := rand.Float64()
-			center := &vec3.Vec3Impl{X: float64(a) + 0.9*rand.Float64(), Y: 0.2, Z: float64(b) + 0.9*rand.Float64()}
-			if vec3.Sub(center, &vec3.Vec3Impl{X: 4, Y: 0.2, Z: 0}).Length() > 0.9 {
-				if chooseMat < 0.8 {
-					// diffuse
-					spheres = append(spheres, hitable.NewSphere(center,
-						vec3.Add(center, &vec3.Vec3Impl{Y: 0.5 * rand.Float64()}), 0.0, 1.0, 0.2,
-						material.NewLambertian(&vec3.Vec3Impl{
-							X: rand.Float64() * rand.Float64(),
-							Y: rand.Float64() * rand.Float64(),
-							Z: rand.Float64() * rand.Float64(),
-						})))
-				} else if chooseMat < 0.95 {
-					// metal
-					spheres = append(spheres, hitable.NewSphere(center, center, 0.0, 1.0, 0.2,
-						material.NewMetal(&vec3.Vec3Impl{
-							X: 0.5 * (1.0 - rand.Float64()),
-							Y: 0.5 * (1.0 - rand.Float64()),
-							Z: 0.5 * (1.0 - rand.Float64()),
-						}, 0.2*rand.Float64())))
-				} else {
-					// glass
-					spheres = append(spheres, hitable.NewSphere(center, center, 0.0, 1.0, 0.2, material.NewDielectric(1.5)))
-				}
-			}
-		}
-	}
-
-	spheres = append(spheres, hitable.NewSphere(&vec3.Vec3Impl{Y: 1.0}, &vec3.Vec3Impl{Y: 1.0}, 0.0, 1.0, 1.0, material.NewDielectric(1.5)))
-	spheres = append(spheres, hitable.NewSphere(&vec3.Vec3Impl{X: -4.0, Y: 1.0}, &vec3.Vec3Impl{X: -4.0, Y: 1.0}, 0.0, 1.0, 1.0, material.NewLambertian(&vec3.Vec3Impl{X: 0.4, Y: 0.2, Z: 0.1})))
-	spheres = append(spheres, hitable.NewSphere(&vec3.Vec3Impl{X: 4.0, Y: 1.0}, &vec3.Vec3Impl{X: 4.0, Y: 1.0}, 0.0, 1.0, 1.0, material.NewMetal(&vec3.Vec3Impl{X: 0.7, Y: 0.6, Z: 0.5}, 0.0)))
-
-	return hitable.NewSlice(spheres)
-}
 
 func color(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 	if rec, mat, ok := world.Hit(r, 0.001, math.MaxFloat64); ok {
@@ -68,13 +29,13 @@ func color(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 func main() {
 	nx := 200
 	ny := 100
-	ns := 10
+	ns := 100
 
 	rand.Seed(time.Now().UnixNano())
 
 	fmt.Printf("P3\n%v %v\n255\n", nx, ny)
 
-	world := randomScene()
+	world := scenes.TwoSpheres()
 	lookFrom := &vec3.Vec3Impl{X: 13.0, Y: 2.0, Z: 3.0}
 	lookAt := &vec3.Vec3Impl{}
 	vup := &vec3.Vec3Impl{Y: 1}
