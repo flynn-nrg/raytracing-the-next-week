@@ -63,3 +63,14 @@ func TwoSpheres() *hitable.HitableSlice {
 
 	return hitable.NewSlice(spheres)
 }
+
+// TwoPerlinSpheres returns a scene containing two spheres with Perlin noise.
+func TwoPerlinSpheres() *hitable.HitableSlice {
+	perText := texture.NewNoise(4.0)
+	spheres := []hitable.Hitable{
+		hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, &vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, 0, 1, 1000, material.NewLambertian(perText)),
+		hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: 2, Z: 0}, &vec3.Vec3Impl{X: 0, Y: 2, Z: 0}, 0, 1, 2, material.NewLambertian(perText)),
+	}
+
+	return hitable.NewSlice(spheres)
+}

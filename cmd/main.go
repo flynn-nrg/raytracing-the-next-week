@@ -35,7 +35,7 @@ func main() {
 
 	fmt.Printf("P3\n%v %v\n255\n", nx, ny)
 
-	world := scenes.TwoSpheres()
+	world := scenes.TwoPerlinSpheres()
 	lookFrom := &vec3.Vec3Impl{X: 13.0, Y: 2.0, Z: 3.0}
 	lookAt := &vec3.Vec3Impl{}
 	vup := &vec3.Vec3Impl{Y: 1}
