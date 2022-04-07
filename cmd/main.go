@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"time"
 
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/camera"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/hitable"
@@ -68,6 +69,8 @@ func main() {
 	nx := 200
 	ny := 100
 	ns := 10
+
+	rand.Seed(time.Now().UnixNano())
 
 	fmt.Printf("P3\n%v %v\n255\n", nx, ny)
 

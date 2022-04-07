@@ -1,6 +1,7 @@
 package hitable
 
 import (
+	"github.com/flynn-nrg/raytracing-the-next-week/pkg/aabb"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/hitrecord"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/material"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/ray"
@@ -38,4 +39,30 @@ func (hs *HitableSlice) Hit(r ray.Ray, tMin float64, tMax float64) (*hitrecord.H
 	}
 
 	return rec, mat, hitAnything
+}
+
+func (hs *HitableSlice) BoundingBox(time0 float64, time1 float64) (*aabb.AABB, bool) {
+	var tempBox *aabb.AABB
+	var box *aabb.AABB
+	var ok bool
+
+	if len(hs.hitables) < 1 {
+		return nil, false
+	}
+
+	if tempBox, ok = hs.hitables[0].BoundingBox(time0, time1); ok {
+		box = tempBox
+	} else {
+		return nil, false
+	}
+
+	for i := 1; i < len(hs.hitables); i++ {
+		if tempBox, ok = hs.hitables[i].BoundingBox(time0, time1); ok {
+			box = aabb.SurroundingBox(box, tempBox)
+		} else {
+			return nil, false
+		}
+	}
+
+	return box, true
 }

@@ -3,6 +3,7 @@ package hitable
 import (
 	"math"
 
+	"github.com/flynn-nrg/raytracing-the-next-week/pkg/aabb"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/hitrecord"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/material"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/ray"
@@ -59,6 +60,16 @@ func (s *Sphere) Hit(r ray.Ray, tMin float64, tMax float64) (*hitrecord.HitRecor
 	}
 
 	return nil, nil, false
+}
+
+func (s *Sphere) BoundingBox(time0 float64, time1 float64) (*aabb.AABB, bool) {
+	box0 := aabb.New(
+		vec3.Sub(s.center0, &vec3.Vec3Impl{X: s.radius, Y: s.radius, Z: s.radius}),
+		vec3.Add(s.center0, &vec3.Vec3Impl{X: s.radius, Y: s.radius, Z: s.radius}))
+	box1 := aabb.New(
+		vec3.Sub(s.center1, &vec3.Vec3Impl{X: s.radius, Y: s.radius, Z: s.radius}),
+		vec3.Add(s.center1, &vec3.Vec3Impl{X: s.radius, Y: s.radius, Z: s.radius}))
+	return aabb.SurroundingBox(box0, box1), true
 }
 
 func (s *Sphere) center(time float64) *vec3.Vec3Impl {
