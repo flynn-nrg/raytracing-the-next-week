@@ -19,6 +19,7 @@ func color(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 		if depth < 50 && ok {
 			return vec3.Mul(attenuation, color(scattered, world, depth+1))
 		}
+
 	}
 	unitDirection := vec3.UnitVector(r.Direction())
 	t := 0.5*unitDirection.Y + 1.0
@@ -35,7 +36,7 @@ func main() {
 
 	fmt.Printf("P3\n%v %v\n255\n", nx, ny)
 
-	world := scenes.TwoPerlinSpheres()
+	world := scenes.TextureMappedSphere()
 	lookFrom := &vec3.Vec3Impl{X: 13.0, Y: 2.0, Z: 3.0}
 	lookAt := &vec3.Vec3Impl{}
 	vup := &vec3.Vec3Impl{Y: 1}

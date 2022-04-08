@@ -2,7 +2,9 @@
 package scenes
 
 import (
+	"log"
 	"math/rand"
+	"os"
 
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/hitable"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/material"
@@ -70,6 +72,23 @@ func TwoPerlinSpheres() *hitable.HitableSlice {
 	spheres := []hitable.Hitable{
 		hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, &vec3.Vec3Impl{X: 0, Y: -1000, Z: 0}, 0, 1, 1000, material.NewLambertian(perText)),
 		hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: 2, Z: 0}, &vec3.Vec3Impl{X: 0, Y: 2, Z: 0}, 0, 1, 2, material.NewLambertian(perText)),
+	}
+
+	return hitable.NewSlice(spheres)
+}
+
+// TwoPerlinSpheres returns a scene containing two spheres with Perlin noise.
+func TextureMappedSphere() *hitable.HitableSlice {
+	file, err := os.Open("../images/earth.png")
+	if err != nil {
+		log.Fatalf("could not read texture file; %v", err)
+	}
+	imgText, err := texture.NewFromPNG(file)
+	if err != nil {
+		log.Fatalf("failed to decode image; %v", err)
+	}
+	spheres := []hitable.Hitable{
+		hitable.NewSphere(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, 0, 1, 1, material.NewLambertian(imgText)),
 	}
 
 	return hitable.NewSlice(spheres)
