@@ -5,6 +5,7 @@ import (
 
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/aabb"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/material"
+	"github.com/flynn-nrg/raytracing-the-next-week/pkg/texture"
 	"github.com/flynn-nrg/raytracing-the-next-week/pkg/vec3"
 	"github.com/google/go-cmp/cmp"
 )
@@ -126,6 +127,7 @@ func TestNewBVH(t *testing.T) {
 			if diff := cmp.Diff(test.want, got, cmp.AllowUnexported(BVHNode{}),
 				cmp.AllowUnexported(Sphere{}),
 				cmp.AllowUnexported(material.Lambertian{}),
+				cmp.AllowUnexported(texture.Constant{}),
 				cmp.AllowUnexported(aabb.AABB{})); diff != "" {
 				t.Errorf("NewBVH() mismatch (-want +got):\n%s", diff)
 			}
@@ -148,5 +150,5 @@ func makeSphere(x float64, y float64, z float64, r float64) *Sphere {
 }
 
 func makeMaterial() material.Material {
-	return material.NewLambertian(&vec3.Vec3Impl{X: 1, Y: 2, Z: 3})
+	return material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.2, Y: 0.3, Z: 0.1}))
 }
