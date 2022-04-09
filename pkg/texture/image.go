@@ -57,5 +57,5 @@ func (it *ImageTxt) Value(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl
 	r := pixel.R
 	g := pixel.G
 	b := pixel.B
-	return &vec3.Vec3Impl{X: float64(r), Y: float64(g), Z: float64(b)}
+	return &vec3.Vec3Impl{X: float64(r) / 255.0, Y: float64(g) / 255.0, Z: float64(b) / 255.0}
 }
