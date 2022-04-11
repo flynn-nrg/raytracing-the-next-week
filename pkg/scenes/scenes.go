@@ -120,6 +120,8 @@ func CornellBox() *hitable.HitableSlice {
 		hitable.NewFlipNormals(hitable.NewXZRect(0, 555, 0, 555, 555, white)),
 		hitable.NewXZRect(0, 555, 0, 555, 0, white),
 		hitable.NewFlipNormals(hitable.NewXYRect(0, 555, 0, 555, 555, white)),
+		hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 165, Z: 165}, white), -18), &vec3.Vec3Impl{X: 130, Y: 0, Z: 65}),
+		hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 330, Z: 165}, white), 15), &vec3.Vec3Impl{X: 265, Y: 0, Z: 295}),
 	}
 
 	return hitable.NewSlice(hitables)

@@ -53,6 +53,16 @@ func BoxLessZ(box0 *AABB, box1 *AABB) bool {
 	return box0.min.Z < box1.min.Z
 }
 
+// Min returns the min vector for this bounding box.
+func (a *AABB) Min() *vec3.Vec3Impl {
+	return a.min
+}
+
+// Max return the max vector for this bounding box.
+func (a *AABB) Max() *vec3.Vec3Impl {
+	return a.max
+}
+
 // Hit returns true if a ray intersects with the bounding box.
 func (a *AABB) Hit(r ray.Ray, tMin float64, tMax float64) bool {
 
