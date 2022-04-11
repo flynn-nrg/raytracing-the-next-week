@@ -27,3 +27,8 @@ func (l *Lambertian) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 	target := vec3.Add(hr.P(), hr.Normal(), randomInUnitSphere())
 	return ray.New(hr.P(), vec3.Sub(target, hr.P()), r.Time()), l.albedo.Value(hr.U(), hr.V(), hr.P()), true
 }
+
+// Emitted returns black for Lambertian materials.
+func (l *Lambertian) Emitted(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl {
+	return &vec3.Vec3Impl{}
+}

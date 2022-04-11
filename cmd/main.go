@@ -16,15 +16,15 @@ import (
 func color(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 	if rec, mat, ok := world.Hit(r, 0.001, math.MaxFloat64); ok {
 		scattered, attenuation, ok := mat.Scatter(r, rec)
+		emitted := mat.Emitted(rec.U(), rec.V(), rec.P())
 		if depth < 50 && ok {
-			return vec3.Mul(attenuation, color(scattered, world, depth+1))
+			// emitted + (attenuation * color)
+			return vec3.Add(emitted, vec3.Mul(attenuation, color(scattered, world, depth+1)))
+		} else {
+			return emitted
 		}
-
 	}
-	unitDirection := vec3.UnitVector(r.Direction())
-	t := 0.5*unitDirection.Y + 1.0
-	return vec3.Add(vec3.ScalarMul(&vec3.Vec3Impl{X: 1.0, Y: 1.0, Z: 1.0}, (1.0-t)),
-		vec3.ScalarMul(&vec3.Vec3Impl{X: 0.5, Y: 0.7, Z: 1.0}, t))
+	return &vec3.Vec3Impl{}
 }
 
 func main() {
@@ -36,14 +36,14 @@ func main() {
 
 	fmt.Printf("P3\n%v %v\n255\n", nx, ny)
 
-	world := scenes.TextureMappedSphere()
-	lookFrom := &vec3.Vec3Impl{X: 13.0, Y: 2.0, Z: 3.0}
-	lookAt := &vec3.Vec3Impl{}
+	world := scenes.CornellBox()
+	lookFrom := &vec3.Vec3Impl{X: 278.0, Y: 278.0, Z: -800.0}
+	lookAt := &vec3.Vec3Impl{X: 278, Y: 278, Z: 0}
 	vup := &vec3.Vec3Impl{Y: 1}
 	distToFocus := 10.0
 	aperture := 0.0
 	aspect := float64(nx) / float64(ny)
-	vfov := float64(20.0)
+	vfov := float64(40.0)
 	time0 := 0.0
 	time1 := 1.0
 	cam := camera.New(lookFrom, lookAt, vup, vfov, aspect, aperture, distToFocus, time0, time1)

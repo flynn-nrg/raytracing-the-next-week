@@ -30,3 +30,8 @@ func (m *Metal) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, *vec3
 	attenuation := m.albedo
 	return scattered, attenuation, (vec3.Dot(scattered.Direction(), hr.Normal()) > 0)
 }
+
+// Emitted returns black for metallic materials.
+func (m *Metal) Emitted(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl {
+	return &vec3.Vec3Impl{}
+}

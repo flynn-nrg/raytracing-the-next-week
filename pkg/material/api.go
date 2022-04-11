@@ -10,4 +10,5 @@ import (
 // Material defines the methods to handle materials.
 type Material interface {
 	Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, *vec3.Vec3Impl, bool)
+	Emitted(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl
 }

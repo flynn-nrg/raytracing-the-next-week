@@ -93,3 +93,34 @@ func TextureMappedSphere() *hitable.HitableSlice {
 
 	return hitable.NewSlice(spheres)
 }
+
+// SimpleLight returns a scene containing three spheres and a rectangle.
+func SimpleLight() *hitable.HitableSlice {
+	perText := texture.NewNoise(4.0)
+	hitables := []hitable.Hitable{
+		hitable.NewSphere(&vec3.Vec3Impl{Y: -1000}, &vec3.Vec3Impl{Y: -1000}, 0, 1, 1000, material.NewLambertian(perText)),
+		hitable.NewSphere(&vec3.Vec3Impl{Y: 2}, &vec3.Vec3Impl{Y: 2}, 0, 1, 2, material.NewLambertian(perText)),
+		hitable.NewSphere(&vec3.Vec3Impl{Y: 7}, &vec3.Vec3Impl{Y: 7}, 0, 1, 2, material.NewDiffuseLight(texture.NewConstant(&vec3.Vec3Impl{X: 4, Y: 4, Z: 4}))),
+		hitable.NewXYRect(3, 5, 1, 3, -2, material.NewDiffuseLight(texture.NewConstant(&vec3.Vec3Impl{X: 4, Y: 4, Z: 4}))),
+	}
+
+	return hitable.NewSlice(hitables)
+}
+
+// CornellBox returns a scene recreating the Cornell box.
+func CornellBox() *hitable.HitableSlice {
+	red := material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.65, Y: 0.05, Z: 0.05}))
+	white := material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.73, Y: 0.73, Z: 0.73}))
+	green := material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.12, Y: 0.45, Z: 0.15}))
+	light := material.NewDiffuseLight(texture.NewConstant(&vec3.Vec3Impl{X: 15, Y: 15, Z: 15}))
+	hitables := []hitable.Hitable{
+		hitable.NewFlipNormals(hitable.NewYZRect(0, 555, 0, 555, 555, green)),
+		hitable.NewYZRect(0, 555, 0, 555, 0, red),
+		hitable.NewXZRect(213, 343, 227, 332, 554, light),
+		hitable.NewFlipNormals(hitable.NewXZRect(0, 555, 0, 555, 555, white)),
+		hitable.NewXZRect(0, 555, 0, 555, 0, white),
+		hitable.NewFlipNormals(hitable.NewXYRect(0, 555, 0, 555, 555, white)),
+	}
+
+	return hitable.NewSlice(hitables)
+}

@@ -61,3 +61,8 @@ func (d *Dielectric) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, 
 
 	return scattered, attenuation, true
 }
+
+// Emitted returns black for dielectrics materials.
+func (d *Dielectric) Emitted(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl {
+	return &vec3.Vec3Impl{}
+}
