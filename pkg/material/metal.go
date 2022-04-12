@@ -32,6 +32,6 @@ func (m *Metal) Scatter(r ray.Ray, hr *hitrecord.HitRecord) (*ray.RayImpl, *vec3
 }
 
 // Emitted returns black for metallic materials.
-func (m *Metal) Emitted(u float64, v float64, p *vec3.Vec3Impl) *vec3.Vec3Impl {
+func (m *Metal) Emitted(_ float64, _ float64, _ *vec3.Vec3Impl) *vec3.Vec3Impl {
 	return &vec3.Vec3Impl{}
 }

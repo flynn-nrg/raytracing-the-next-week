@@ -113,6 +113,9 @@ func CornellBox() *hitable.HitableSlice {
 	white := material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.73, Y: 0.73, Z: 0.73}))
 	green := material.NewLambertian(texture.NewConstant(&vec3.Vec3Impl{X: 0.12, Y: 0.45, Z: 0.15}))
 	light := material.NewDiffuseLight(texture.NewConstant(&vec3.Vec3Impl{X: 15, Y: 15, Z: 15}))
+	b1 := hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 165, Z: 165}, white), -18), &vec3.Vec3Impl{X: 130, Y: 0, Z: 65})
+	b2 := hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 330, Z: 165}, white), 15), &vec3.Vec3Impl{X: 265, Y: 0, Z: 295})
+
 	hitables := []hitable.Hitable{
 		hitable.NewFlipNormals(hitable.NewYZRect(0, 555, 0, 555, 555, green)),
 		hitable.NewYZRect(0, 555, 0, 555, 0, red),
@@ -122,6 +125,8 @@ func CornellBox() *hitable.HitableSlice {
 		hitable.NewFlipNormals(hitable.NewXYRect(0, 555, 0, 555, 555, white)),
 		hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 165, Z: 165}, white), -18), &vec3.Vec3Impl{X: 130, Y: 0, Z: 65}),
 		hitable.NewTranslate(hitable.NewRotateY(hitable.NewBox(&vec3.Vec3Impl{X: 0, Y: 0, Z: 0}, &vec3.Vec3Impl{X: 165, Y: 330, Z: 165}, white), 15), &vec3.Vec3Impl{X: 265, Y: 0, Z: 295}),
+		hitable.NewConstantMedium(b1, 0.01, texture.NewConstant(&vec3.Vec3Impl{X: 1, Y: 1, Z: 1})),
+		hitable.NewConstantMedium(b2, 0.01, texture.NewConstant(&vec3.Vec3Impl{})),
 	}
 
 	return hitable.NewSlice(hitables)

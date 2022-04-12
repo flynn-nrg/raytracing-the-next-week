@@ -28,9 +28,9 @@ func color(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 }
 
 func main() {
-	nx := 200
-	ny := 100
-	ns := 100
+	nx := 400
+	ny := 200
+	ns := 200
 
 	rand.Seed(time.Now().UnixNano())
 
