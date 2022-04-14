@@ -182,7 +182,7 @@ func Final() *hitable.HitableSlice {
 	emat := material.NewLambertian(imgText)
 	list = append(list, hitable.NewSphere(&vec3.Vec3Impl{X: 400, Y: 200, Z: 400}, &vec3.Vec3Impl{X: 400, Y: 200, Z: 400}, 0, 1, 100, emat))
 
-	perText := texture.NewNoise(3.1)
+	perText := texture.NewNoise(4.0)
 	list = append(list, hitable.NewSphere(&vec3.Vec3Impl{X: 220, Y: 280, Z: 300}, &vec3.Vec3Impl{X: 220, Y: 280, Z: 300}, 0, 1, 80, material.NewLambertian(perText)))
 
 	ns := 1000
