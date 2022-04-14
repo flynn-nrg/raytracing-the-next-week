@@ -39,6 +39,14 @@ func colour(r ray.Ray, world *hitable.HitableSlice, depth int) *vec3.Vec3Impl {
 	return &vec3.Vec3Impl{}
 }
 
+func clamp(f float64) uint8 {
+	i := int(255.99 * f)
+	if i < 256 {
+		return uint8(i)
+	}
+
+	return 255
+}
 func renderRect(w workUnit) {
 	nx := w.canvas.Bounds().Max.X
 	ny := w.canvas.Bounds().Max.Y
@@ -55,9 +63,9 @@ func renderRect(w workUnit) {
 			col = vec3.ScalarDiv(col, float64(w.numSamples))
 			// gamma 2
 			col = &vec3.Vec3Impl{X: math.Sqrt(col.X), Y: math.Sqrt(col.Y), Z: math.Sqrt(col.Z)}
-			ir := uint8(255.99 * col.X)
-			ig := uint8(255.99 * col.Y)
-			ib := uint8(255.99 * col.Z)
+			ir := clamp(col.X)
+			ig := clamp(col.Y)
+			ib := clamp(col.Z)
 			w.canvas.SetNRGBA(x, y, color.NRGBA{R: ir, G: ig, B: ib, A: 255})
 		}
 	}
