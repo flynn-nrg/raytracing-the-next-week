@@ -46,15 +46,22 @@ func (s *Sphere) Hit(r ray.Ray, tMin float64, tMax float64) (*hitrecord.HitRecor
 	if discriminant > 0 {
 		temp := (-b - math.Sqrt(b*b-a*c)) / a
 		if temp < tMax && temp > tMin {
-			u, v := getSphereUV(vec3.UnitVector(r.PointAtParameter(temp)))
+			outwardNormal := vec3.ScalarDiv(vec3.Sub(r.PointAtParameter(temp), s.center(r.Time())), s.radius)
+			if vec3.Dot(r.Direction(), outwardNormal) >= 0 {
+				outwardNormal = vec3.ScalarMul(outwardNormal, -1)
+			}
+			u, v := getSphereUV(outwardNormal)
 			return hitrecord.New(temp, u, v, r.PointAtParameter(temp),
-				vec3.ScalarDiv(vec3.Sub(r.PointAtParameter(temp), s.center(r.Time())),
-					s.radius)), s.material, true
+				outwardNormal), s.material, true
 		}
 
 		temp = (-b + math.Sqrt(b*b-a*c)) / a
 		if temp < tMax && temp > tMin {
-			u, v := getSphereUV(vec3.UnitVector(r.PointAtParameter(temp)))
+			outwardNormal := vec3.ScalarDiv(vec3.Sub(r.PointAtParameter(temp), s.center(r.Time())), s.radius)
+			if vec3.Dot(r.Direction(), outwardNormal) >= 0 {
+				outwardNormal = vec3.ScalarMul(outwardNormal, -1)
+			}
+			u, v := getSphereUV(outwardNormal)
 			return hitrecord.New(temp, u, v,
 				r.PointAtParameter(temp),
 				vec3.ScalarDiv(vec3.Sub(r.PointAtParameter(temp), s.center(r.Time())), s.radius)), s.material, true
