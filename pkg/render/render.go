@@ -90,7 +90,7 @@ func Render(cam *camera.Camera, world *hitable.HitableSlice, canvas *image.NRGBA
 	nx := canvas.Bounds().Max.X
 	ny := canvas.Bounds().Max.Y
 
-	queue := make(chan workUnit, numWorkers)
+	queue := make(chan workUnit)
 	quit := make(chan struct{})
 	wg := sync.WaitGroup{}
 
@@ -98,7 +98,7 @@ func Render(cam *camera.Camera, world *hitable.HitableSlice, canvas *image.NRGBA
 		go worker(queue, quit, wg)
 	}
 
-	for y := 0; y <= ny; y += 10 {
+	for y := 0; y <= (ny - 10); y += 10 {
 		queue <- workUnit{
 			cam:        cam,
 			world:      world,
@@ -107,7 +107,7 @@ func Render(cam *camera.Camera, world *hitable.HitableSlice, canvas *image.NRGBA
 			x0:         0,
 			x1:         nx,
 			y0:         y,
-			y1:         y + 10,
+			y1:         y + (10 - 1),
 		}
 	}
 
